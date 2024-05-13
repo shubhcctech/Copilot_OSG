@@ -37,7 +37,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
     }
 
 
-    if (jsonResponse["shape"] == "circle") {
+    else if (jsonResponse["shape"] == "circle") {
         DrawShape drawCircle;
         parameters["radius"] = jsonResponse["size"];
         parameters["colorR"] = jsonResponse["color"]["r"];
@@ -50,7 +50,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
     }
 
-    if (jsonResponse["shape"] == "ellipse") {
+    else if (jsonResponse["shape"] == "ellipse") {
         DrawShape drawEllipse;
 
         if (jsonResponse["size"].contains("major_axis") && jsonResponse["size"].contains("minor_axis")) {
@@ -61,8 +61,9 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
 
-
+            return drawEllipse.drawEllipse(parameters);
         }
+
         else {
             parameters["majorAxis"] = jsonResponse["size"]["width"];
             parameters["minorAxis"] = jsonResponse["size"]["height"];
@@ -70,13 +71,20 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorG"] = jsonResponse["color"]["g"];
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
-        }
-       
 
-        return drawEllipse.drawEllipse(parameters);
+            return drawEllipse.drawEllipse(parameters);
+
+        }
+
 
     }
-    if (jsonResponse["shape"] == "arc") {
+       
+       
+
+       
+
+    
+     else if (jsonResponse["shape"] == "arc") {
         DrawShape drawArc;
         parameters["radius1"] = jsonResponse["size"][0];
         parameters["radius2"] = jsonResponse["size"][1];
@@ -91,6 +99,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         return drawArc.drawArc(parameters);
 
     }
+   
 }
    
  

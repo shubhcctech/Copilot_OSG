@@ -66,21 +66,17 @@ void Copilot_OpenSceneGraph::clicked() {
     QString prompt = textInput->text();
     if (!prompt.isEmpty()) {
         prompt.append(final);
+        worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
+        connect(worker, &OpenAIConnection::completionReceived, this, &Copilot_OpenSceneGraph::handleCompletion);
+
+        // Start the completion process in a separate thread
+        worker->process();
+
     }
     else {
-        prompt = "Just say enter a details to draw a  primitive shape dont mention any shape";
+        QMessageBox::information(this, "Completion Received", "Enter a primitive shape to draw");
     }
-    // If a previous worker exists, delete it
-   
 
-    // Create a new worker instance
-    worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
-
-    // Connect signals to handle completion
-    connect(worker, &OpenAIConnection::completionReceived, this, &Copilot_OpenSceneGraph::handleCompletion);
-
-    // Start the completion process in a separate thread
-    worker->process();
 
     
 }
@@ -88,19 +84,13 @@ void Copilot_OpenSceneGraph::clicked() {
 void Copilot_OpenSceneGraph::handleCompletion(const QString& completion)
 {   
    
-    
-    QString response = completion;
-    std::string output = completion.toStdString();
-    JsonParser json;
-   
+        QString response = completion;
+        std::string output = completion.toStdString();
+        JsonParser json;
 
-   
-    osg::Geode* geode = json.readJSON(output);
-    osgWidget->addDrawable(geode);
-    osgWidget->update();
-   
-    
-
+        osg::Geode* geode = json.readJSON(output);
+        osgWidget->addDrawable(geode);
+        osgWidget->update();
     
     QMessageBox::information(this, "Completion Received", "Shape Created Successfully");
 }

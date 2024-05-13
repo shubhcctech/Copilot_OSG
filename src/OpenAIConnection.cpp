@@ -37,8 +37,7 @@ std::string OpenAIConnection::getCompletion(const std::string& prompt, const std
     requestData["model"] = model;
     requestData["messages"][0]["role"] = "user";
     requestData["messages"][0]["content"] = prompt;
-    //requestData["description"] = "Generate JSON data representing a shape based on user input."; // Add description here
-    requestData["temperature"] = 0;
+       requestData["temperature"] = 0;
 
     std::string requestDataStr = requestData.dump();
 
