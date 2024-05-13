@@ -23,6 +23,7 @@ private:
 
     void setupUi();
     void clicked();
+    void checkShape(QString);
 
 private:
 
