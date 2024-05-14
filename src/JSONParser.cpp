@@ -25,11 +25,15 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
     if (jsonResponse["shape"] == "line") {
         DrawShape drawLine;
-        parameters["length"] = jsonResponse["size"];
+        parameters["startX"] = jsonResponse["startPoint"]["x"];
+        parameters["startY"] = jsonResponse["startPoint"]["y"];
+        parameters["endX"] = jsonResponse["endPoint"]["x"];
+        parameters["endY"] = jsonResponse["endPoint"]["y"];
         parameters["colorR"] = jsonResponse["color"]["r"];
         parameters["colorG"] = jsonResponse["color"]["g"];
         parameters["colorB"] = jsonResponse["color"]["b"];
         parameters["colorA"] = jsonResponse["color"]["a"];
+        parameters["thickness"] = jsonResponse["thickness"];
 
 
         return drawLine.drawLine(parameters);
@@ -43,6 +47,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         parameters["colorG"] = jsonResponse["color"]["g"];
         parameters["colorB"] = jsonResponse["color"]["b"];
         parameters["colorA"] = jsonResponse["color"]["a"];
+        parameters["thickness"] = jsonResponse["thickness"];
 
 
         return drawCircle.drawCircle(parameters);
@@ -59,6 +64,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorG"] = jsonResponse["color"]["g"];
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
+            parameters["thickness"] = jsonResponse["thickness"];
 
             return drawEllipse.drawEllipse(parameters);
         }
@@ -70,6 +76,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorG"] = jsonResponse["color"]["g"];
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
+            parameters["thickness"] = jsonResponse["thickness"];
 
             return drawEllipse.drawEllipse(parameters);
 
@@ -80,14 +87,14 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
  
      else if (jsonResponse["shape"] == "arc") {
         DrawShape drawArc;
-        parameters["radius1"] = jsonResponse["size"][0];
-        parameters["radius2"] = jsonResponse["size"][1];
-        parameters["angle1"] = 60.0;
-        parameters["angle2"] = 90.0;
+        parameters["radius1"] = jsonResponse["size"];
+        parameters["angle1"] = jsonResponse["startAngle"];
+        parameters["angle2"] = jsonResponse["endAngle"];
         parameters["colorR"] = jsonResponse["color"]["r"];
         parameters["colorG"] = jsonResponse["color"]["g"];
         parameters["colorB"] = jsonResponse["color"]["b"];
         parameters["colorA"] = jsonResponse["color"]["a"];
+        parameters["thickness"] = jsonResponse["thickness"];
 
 
         return drawArc.drawArc(parameters);
