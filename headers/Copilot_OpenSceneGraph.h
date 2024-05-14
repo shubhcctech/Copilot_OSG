@@ -29,11 +29,13 @@ private:
 
     QMainWindow window;
     QtOSGWidget* osgWidget;
-    QVBoxLayout* mainLayout;
+    QGridLayout* mainLayout;
     QHBoxLayout* textInputLayout;
     QLineEdit* textInput;
     QPushButton* button;
     QWidget* centralWidget;
     OpenAIConnection* worker;
+    QHBoxLayout* windowLayout;
+    
 
 };

@@ -20,44 +20,44 @@ Copilot_OpenSceneGraph::~Copilot_OpenSceneGraph()
 void Copilot_OpenSceneGraph::setupUi() {
 
  
-   
-   
     window.resize(800, 600);
-    
-    mainLayout = new QVBoxLayout;
+
+    // Main layout - using QGridLayout instead of QVBoxLayout
+    mainLayout = new QGridLayout;
 
     // Added QtOSGWidget to the main layout
     osgWidget = new QtOSGWidget(&window);
-    mainLayout->addWidget(osgWidget);
-
-
-    // Created a horizontal layout for the text input and button
-     textInputLayout = new QHBoxLayout;
+    mainLayout->addWidget(osgWidget, 0, 0, 1, 2); // Widget spanning 1 row and 2 columns
 
     // Created the user text input
-     textInput = new QLineEdit(this);
+    textInput = new QLineEdit(this);
     textInput->setPlaceholderText("Enter text here...");
     textInput->setFixedHeight(50);
-    textInputLayout->addWidget(textInput);
+    textInput->setStyleSheet("QLineEdit { border: 2px solid #3498db; border-radius: 10px; padding: 0 10px; font-size:16}");
+    mainLayout->addWidget(textInput, 1, 0); // Text input in row 1, column 0
 
     // Created the push button for submit
-     button = new QPushButton("Submit", this);
+    button = new QPushButton("Submit", this);
     button->setFixedHeight(50);
-    textInputLayout->addWidget(button);
+    button->setFixedWidth(100);
+    button->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border-radius: 15px; border: none; font-size: 16px; font-weight: bold; }"
+        "QPushButton:hover { background-color: #45a049; }");
+    mainLayout->addWidget(button, 1, 1); // Button in row 1, column 1
 
-    // Added the text input layout to the main layout
-    mainLayout->addLayout(textInputLayout);
+    // Set column stretch to make sure the OSG widget takes more space
+    mainLayout->setColumnStretch(0, 1);
 
     // Set the central widget to the main layout
-   centralWidget = new QWidget(this);
+    centralWidget = new QWidget(this);
     centralWidget->setLayout(mainLayout);
     window.setCentralWidget(centralWidget);
+
+    // Show window
     window.show();
     window.setWindowTitle(QCoreApplication::translate("Copilot OpenSceneGraph", "Copilot OpenSceneGraph", nullptr));
 
+    // Connect button click signal to slot
     connect(button, &QPushButton::clicked, this, &Copilot_OpenSceneGraph::clicked);
-
-
             
 }
 
