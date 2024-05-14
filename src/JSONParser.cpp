@@ -6,8 +6,7 @@
 #include <DrawShape.h>
 #include"JSONParser.h"
 #include "Data.h"
-
-
+#include <QtWidgets/QMainWindow>#include "QtOSGWidget.h"
 // Alias for convenience
 using json = nlohmann::json;
 
@@ -65,8 +64,8 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         }
 
         else {
-            parameters["majorAxis"] = jsonResponse["size"]["width"];
-            parameters["minorAxis"] = jsonResponse["size"]["height"];
+            parameters["majorAxis"] = jsonResponse["size"]["radiusX"];
+            parameters["minorAxis"] = jsonResponse["size"]["radiusY"];
             parameters["colorR"] = jsonResponse["color"]["r"];
             parameters["colorG"] = jsonResponse["color"]["g"];
             parameters["colorB"] = jsonResponse["color"]["b"];
@@ -78,12 +77,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
 
     }
-       
-       
-
-       
-
-    
+ 
      else if (jsonResponse["shape"] == "arc") {
         DrawShape drawArc;
         parameters["radius1"] = jsonResponse["size"][0];
@@ -98,6 +92,10 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
         return drawArc.drawArc(parameters);
 
+    }
+     else {
+        
+        return nullptr;
     }
    
 }
