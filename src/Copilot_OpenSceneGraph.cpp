@@ -62,7 +62,7 @@ void Copilot_OpenSceneGraph::setupUi() {
 }
 
 void Copilot_OpenSceneGraph::clicked() {
-   //QString final = " Json in this format {shape:,size : ,color : {r:,g : ,b: ,a :} every value along rgba in float and pretty format ";
+   
     QString userInput = textInput->text();
     checkShape(userInput);
 
@@ -85,9 +85,9 @@ void Copilot_OpenSceneGraph::handleCompletion(const QString& completion)
 }
 
 void Copilot_OpenSceneGraph::checkShape(QString prompt) {
-    //QString finalPrompt = prompt;
-    prompt.toLower();
-    if (prompt.contains("circle")) {
+  
+    
+    if (prompt.toLower().contains("circle")) {
         QString final = "Generate a JSON object representing a circle with the following attributes: {\"shape\": \"circle\", \"size\": <circle_size >, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the circle size, thickness, and color values.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
@@ -96,7 +96,7 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
         // Start the completion process in a separate thread
         worker->process();
     }
-    else if (prompt.contains("ellipse")) {
+    else if (prompt.toLower().contains("ellipse")) {
         QString final = "Generate a JSON object representing an ellipse with the following attributes: {\"shape\": \"ellipse\", \"size\": {\"radiusX\": <radiusX_value>, \"radiusY\": <radiusY_value> }, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the radiusX, radiusY, thickness, and color values.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
@@ -106,7 +106,7 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
         worker->process();
     }
 
-    else if (prompt.contains("arc")) {
+    else if (prompt.toLower().contains("arc")) {
         QString final = "Generate a JSON object representing an arc with the following attributes: {\"shape\": \"arc\", \"size\": <arc_size>, \"startAngle\": <start_angle>, \"endAngle\": <end_angle>, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the arc size, start angle, end angle, thickness, and color values.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
@@ -115,7 +115,7 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
         // Start the completion process in a separate thread
         worker->process();
     }
-    else if (prompt.contains("line")) {
+    else if (prompt.toLower().contains("line")) {
         QString final = "Generate a JSON object representing a line with the following attributes: {\"shape\": \"line\", \"startPoint\": {\"x\": <start_x>, \"y\": <start_y> }, \"endPoint\": {\"x\": <end_x>, \"y\": <end_y> }, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the start and end points, thickness, and color values.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");

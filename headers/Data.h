@@ -1,4 +1,7 @@
 #pragma once
+#include <map>
+#include<iostream>
+#include <string>
 
 
 class Data {
@@ -9,6 +12,7 @@ public :
 		if (instancePtr == NULL) {
 
 			instancePtr = new Data();
+			return instancePtr;
 		}
 
 		else {

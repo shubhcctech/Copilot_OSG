@@ -10,7 +10,7 @@ Data::~Data() {
 
 }
 
-
+Data *Data::instancePtr = nullptr;
 
 
 std::map<std::string, float> Data::parameters() {

@@ -6,7 +6,8 @@
 #include <DrawShape.h>
 #include"JSONParser.h"
 #include "Data.h"
-#include <QtWidgets/QMainWindow>#include "QtOSGWidget.h"
+#include <QtWidgets/QMainWindow>
+#include "QtOSGWidget.h"
 // Alias for convenience
 using json = nlohmann::json;
 
@@ -22,6 +23,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
     std::map<std::string, float> parameters;
     json jsonResponse;
     jsonResponse = json::parse(response);
+    Data* data = Data::getInstance();
 
     if (jsonResponse["shape"] == "line") {
         DrawShape drawLine;
@@ -35,6 +37,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         parameters["colorA"] = jsonResponse["color"]["a"];
         parameters["thickness"] = jsonResponse["thickness"];
 
+        data->setParameters(parameters);
 
         return drawLine.drawLine(parameters);
     }
@@ -49,7 +52,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         parameters["colorA"] = jsonResponse["color"]["a"];
         parameters["thickness"] = jsonResponse["thickness"];
 
-
+        data->setParameters(parameters);
         return drawCircle.drawCircle(parameters);
 
     }
@@ -65,7 +68,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
             parameters["thickness"] = jsonResponse["thickness"];
-
+            data->setParameters(parameters);
             return drawEllipse.drawEllipse(parameters);
         }
 
@@ -77,7 +80,7 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
             parameters["colorB"] = jsonResponse["color"]["b"];
             parameters["colorA"] = jsonResponse["color"]["a"];
             parameters["thickness"] = jsonResponse["thickness"];
-
+            data->setParameters(parameters);
             return drawEllipse.drawEllipse(parameters);
 
         }
@@ -96,11 +99,12 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         parameters["colorA"] = jsonResponse["color"]["a"];
         parameters["thickness"] = jsonResponse["thickness"];
 
-
+        data->setParameters(parameters);
         return drawArc.drawArc(parameters);
 
     }
      else {
+        
         
         return nullptr;
     }

@@ -118,9 +118,11 @@
     <None Include="Copilot_OpenSceneGraph.ico" />
     <ResourceCompile Include="Copilot_OpenSceneGraph.rc" />
     <QtMoc Include="headers\QtOSGWidget.h" />
+    <ClInclude Include="headers\Data.h" />
     <ClInclude Include="headers\DrawShape.h" />
     <ClInclude Include="headers\JSONParser.h" />
     <ClInclude Include="headers\stdafx.h" />
+    <ClCompile Include="src\Data.cpp" />
     <ClCompile Include="src\DrawShape.cpp" />
     <ClCompile Include="src\JSONParser.cpp" />
     <ClCompile Include="src\OpenAIConnection.cpp" />
