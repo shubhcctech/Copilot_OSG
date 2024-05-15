@@ -27,15 +27,15 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
     if (jsonResponse["shape"] == "line") {
         DrawShape drawLine;
-        parameters["startX"] = jsonResponse["startPoint"]["x"];
-        parameters["startY"] = jsonResponse["startPoint"]["y"];
-        parameters["endX"] = jsonResponse["endPoint"]["x"];
-        parameters["endY"] = jsonResponse["endPoint"]["y"];
-        parameters["colorR"] = jsonResponse["color"]["r"];
-        parameters["colorG"] = jsonResponse["color"]["g"];
-        parameters["colorB"] = jsonResponse["color"]["b"];
-        parameters["colorA"] = jsonResponse["color"]["a"];
-        parameters["thickness"] = jsonResponse["thickness"];
+        parameters["Start_X"] = jsonResponse["startPoint"]["x"];
+        parameters["Start_Y"] = jsonResponse["startPoint"]["y"];
+        parameters["End_X"] = jsonResponse["endPoint"]["x"];
+        parameters["End_Y"] = jsonResponse["endPoint"]["y"];
+        parameters["Color_R"] = jsonResponse["color"]["r"];
+        parameters["Color_G"] = jsonResponse["color"]["g"];
+        parameters["Color_B"] = jsonResponse["color"]["b"];
+        parameters["Color_A"] = jsonResponse["color"]["a"];
+        parameters["Thickness"] = jsonResponse["thickness"];
 
         data->setParameters(parameters);
 

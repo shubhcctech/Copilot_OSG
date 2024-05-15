@@ -17,6 +17,7 @@ public:
 
 public slots:
     void handleCompletion(const QString& completion);
+   
 
 
 private:
@@ -24,6 +25,7 @@ private:
     void setupUi();
     void clicked();
     void checkShape(QString);
+   
 
 private:
 
@@ -36,6 +38,9 @@ private:
     QWidget* centralWidget;
     OpenAIConnection* worker;
     QHBoxLayout* windowLayout;
+    QTextEdit* panelTextEdit;
+
+
     
 
 };

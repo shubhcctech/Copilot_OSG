@@ -163,8 +163,8 @@ osg::Geode* DrawShape::drawLine(std::map<std::string, float> parameters) const {
     geom->setVertexArray(vertices);
 
     // Add start and end points to form the line
-    vertices->push_back(osg::Vec3(parameters["startX"], parameters["startY"], 0.0f));  // Start point
-    vertices->push_back(osg::Vec3(parameters["endX"], parameters["endY"], 0.0f)); // End point
+    vertices->push_back(osg::Vec3(parameters["Start_X"], parameters["Start_Y"], 0.0f));  // Start point
+    vertices->push_back(osg::Vec3(parameters["End_X"], parameters["End_Y"], 0.0f)); // End point
 
     // Create a primitive set (line strip)
     osg::ref_ptr<osg::DrawElementsUInt> strip =
@@ -176,11 +176,11 @@ osg::Geode* DrawShape::drawLine(std::map<std::string, float> parameters) const {
     geom->addPrimitiveSet(strip);
 
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(parameters["colorR"], parameters["colorG"], parameters["colorB"], parameters["colorA"])); // Line color
+    colors->push_back(osg::Vec4(parameters["Color_R"], parameters["Color_G"], parameters["Color_B"], parameters["Color_A"])); // Line color
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width
-    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["thickness"]);
+    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["Thickness"]);
     geom->getOrCreateStateSet()->setAttributeAndModes(lineWidth, osg::StateAttribute::ON);
 
     // Disable lighting

@@ -10,6 +10,7 @@
 Copilot_OpenSceneGraph::Copilot_OpenSceneGraph(QWidget *parent)
     : QMainWindow(parent)
 {
+    
     setupUi();
 }
 
@@ -19,7 +20,6 @@ Copilot_OpenSceneGraph::~Copilot_OpenSceneGraph()
 
 void Copilot_OpenSceneGraph::setupUi() {
 
- 
     window.resize(800, 600);
 
     // Main layout - using QGridLayout instead of QVBoxLayout
@@ -27,22 +27,35 @@ void Copilot_OpenSceneGraph::setupUi() {
 
     // Added QtOSGWidget to the main layout
     osgWidget = new QtOSGWidget(&window);
-    mainLayout->addWidget(osgWidget, 0, 0, 1, 2); // Widget spanning 1 row and 2 columns
+    mainLayout->addWidget(osgWidget, 0, 0, 1, 70); // Widget spanning 1 row and 2 columns
 
     // Created the user text input
     textInput = new QLineEdit(this);
     textInput->setPlaceholderText("Enter text here...");
     textInput->setFixedHeight(50);
-    textInput->setStyleSheet("QLineEdit { border: 2px solid #3498db; border-radius: 10px; padding: 0 10px; font-size:16}");
-    mainLayout->addWidget(textInput, 1, 0); // Text input in row 1, column 0
+    textInput->setStyleSheet("QLineEdit { border: 2px solid #3498db; border-radius: 10px; padding: 0 20px; font-size:16}");
+    mainLayout->addWidget(textInput, 1, 0, 1, 106); // Text input in row 1, column 0
 
     // Created the push button for submit
     button = new QPushButton("Submit", this);
     button->setFixedHeight(50);
     button->setFixedWidth(100);
-    button->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border-radius: 15px; border: none; font-size: 16px; font-weight: bold; }"
+    button->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border-radius: 15px; border: 2px solid #14c92f; font-size: 16px; font-weight: bold; }"
         "QPushButton:hover { background-color: #45a049; }");
-    mainLayout->addWidget(button, 1, 1); // Button in row 1, column 1
+    mainLayout->addWidget(button, 1, 108); // Button in row 1, column 1
+
+    // Created the panelTextEdit
+    QWidget* panel = new QWidget(this);
+    QVBoxLayout* panelLayout = new QVBoxLayout(panel);
+    panel->setLayout(panelLayout);
+    panelTextEdit = new QTextEdit("No shape drawn yet.", panel);
+    panelTextEdit->setReadOnly(true);
+    panelTextEdit->setFixedWidth(150); // Set fixed size for better control
+    panelTextEdit->setStyleSheet("background-color: #f0f0f0; color: #333; border: 2px solid #6ccfe0; border-radius: 5px; padding: 10px;");
+    panelLayout->addWidget(panelTextEdit);
+
+    // Add the panel to the main layout
+    mainLayout->addWidget(panel, 0, 71, 1, 40); // Panel in row 2, spanning 2 columns
 
     // Set column stretch to make sure the OSG widget takes more space
     mainLayout->setColumnStretch(0, 1);
@@ -58,13 +71,32 @@ void Copilot_OpenSceneGraph::setupUi() {
 
     // Connect button click signal to slot
     connect(button, &QPushButton::clicked, this, &Copilot_OpenSceneGraph::clicked);
-            
 }
 
 void Copilot_OpenSceneGraph::clicked() {
    
+    Data *data =  Data::getInstance();
     QString userInput = textInput->text();
     checkShape(userInput);
+    std::map<std::string, float> parameters = data->parameters();
+    
+    if (!parameters.empty()&&!userInput.isEmpty()) {
+        QString displayText = "PARAMETERS:\n";
+        for (const auto& pair : parameters) {
+            displayText += QString::fromStdString(pair.first) + ": " + QString::number(pair.second) + "\n";
+        }
+
+        // Set the constructed string as the text of the QTextEdit
+        panelTextEdit->setText(displayText);
+    }
+    else {
+        panelTextEdit->setText("Enter shape such as Circle, Ellipse, Line or Arc , to draw.");
+    }
+    
+    
+   
+
+    
 
 
 }
@@ -78,9 +110,7 @@ void Copilot_OpenSceneGraph::handleCompletion(const QString& completion)
         osg::Geode* geode = json.readJSON(output);
         osgWidget->addDrawable(geode);
         osgWidget->update();
-         QMessageBox::information(this, "Completion Received", "Shape Created Successfully");
-
-        
+ 
         
 }
 
@@ -124,9 +154,5 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
         // Start the completion process in a separate thread
         worker->process();
     }
-    else {
-        QMessageBox::information(this, "Invalid Input", "Enter a valid shape (circle, ellipse, arc, or line)");
-        return;
-    }
-
+    
 }

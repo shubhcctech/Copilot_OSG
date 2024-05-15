@@ -26,13 +26,11 @@ QtOSGWidget::QtOSGWidget(QWidget* parent)
     }
 
       
-    osg::Cylinder* cylinder = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), 0.25f, 0.5f);
-    osg::ShapeDrawable* sd = new osg::ShapeDrawable(cylinder);
-    sd->setColor(osg::Vec4(0.8f, 0.5f, 0.2f, 1.f));
+
 
     osg::Camera* camera = new osg::Camera;
     camera->setViewport(0, 0, this->width(), this->height());
-    camera->setClearColor(osg::Vec4(0.9f, 0.9f, 1.f, 1.f));
+    camera->setClearColor(osg::Vec4(0.725f, 0.827f, 0.929f, 1.0f));
     float aspectRatio = static_cast<float>(this->width()) / static_cast<float>(this->height());
     camera->setProjectionMatrixAsPerspective(30.f, aspectRatio, 1.f, 1000.f);
     camera->setGraphicsContext(mGraphicsWindow);
