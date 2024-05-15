@@ -31,11 +31,12 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
         parameters["Start_Y"] = jsonResponse["startPoint"]["y"];
         parameters["End_X"] = jsonResponse["endPoint"]["x"];
         parameters["End_Y"] = jsonResponse["endPoint"]["y"];
-        parameters["Color_R"] = jsonResponse["color"]["r"];
-        parameters["Color_G"] = jsonResponse["color"]["g"];
-        parameters["Color_B"] = jsonResponse["color"]["b"];
-        parameters["Color_A"] = jsonResponse["color"]["a"];
+        parameters["Red"] = jsonResponse["color"]["r"];
+        parameters["Green"] = jsonResponse["color"]["g"];
+        parameters["Blue"] = jsonResponse["color"]["b"];
+        parameters["Alpha"] = jsonResponse["color"]["a"];
         parameters["Thickness"] = jsonResponse["thickness"];
+
 
         data->setParameters(parameters);
 
@@ -45,59 +46,47 @@ osg::Geode* JsonParser::readJSON(const std::string response) {
 
     else if (jsonResponse["shape"] == "circle") {
         DrawShape drawCircle;
-        parameters["radius"] = jsonResponse["size"];
-        parameters["colorR"] = jsonResponse["color"]["r"];
-        parameters["colorG"] = jsonResponse["color"]["g"];
-        parameters["colorB"] = jsonResponse["color"]["b"];
-        parameters["colorA"] = jsonResponse["color"]["a"];
-        parameters["thickness"] = jsonResponse["thickness"];
+        parameters["Radius"] = jsonResponse["size"];
+        parameters["Red"] = jsonResponse["color"]["r"];
+        parameters["Green"] = jsonResponse["color"]["g"];
+        parameters["Blue"] = jsonResponse["color"]["b"];
+        parameters["Alpha"] = jsonResponse["color"]["a"];
+        parameters["Thickness"] = jsonResponse["thickness"];
 
         data->setParameters(parameters);
-        return drawCircle.drawCircle(parameters);
+        return drawCircle.drawCircle(parameters, jsonResponse["isFilled"]);
 
     }
 
     else if (jsonResponse["shape"] == "ellipse") {
         DrawShape drawEllipse;
 
-        if (jsonResponse["size"].contains("major_axis") && jsonResponse["size"].contains("minor_axis")) {
-            parameters["majorAxis"] = jsonResponse["size"]["major_axis"];
-            parameters["minorAxis"] = jsonResponse["size"]["minor_axis"];
-            parameters["colorR"] = jsonResponse["color"]["r"];
-            parameters["colorG"] = jsonResponse["color"]["g"];
-            parameters["colorB"] = jsonResponse["color"]["b"];
-            parameters["colorA"] = jsonResponse["color"]["a"];
-            parameters["thickness"] = jsonResponse["thickness"];
+    
+        
+            parameters["Major_Axis"] = jsonResponse["size"]["radiusX"];
+            parameters["Minor_Axis"] = jsonResponse["size"]["radiusY"];
+            parameters["Red"] = jsonResponse["color"]["r"];
+            parameters["Green"] = jsonResponse["color"]["g"];
+            parameters["Blue"] = jsonResponse["color"]["b"];
+            parameters["Alpha"] = jsonResponse["color"]["a"];
+            parameters["Thickness"] = jsonResponse["thickness"];
+            
             data->setParameters(parameters);
-            return drawEllipse.drawEllipse(parameters);
-        }
-
-        else {
-            parameters["majorAxis"] = jsonResponse["size"]["radiusX"];
-            parameters["minorAxis"] = jsonResponse["size"]["radiusY"];
-            parameters["colorR"] = jsonResponse["color"]["r"];
-            parameters["colorG"] = jsonResponse["color"]["g"];
-            parameters["colorB"] = jsonResponse["color"]["b"];
-            parameters["colorA"] = jsonResponse["color"]["a"];
-            parameters["thickness"] = jsonResponse["thickness"];
-            data->setParameters(parameters);
-            return drawEllipse.drawEllipse(parameters);
-
-        }
-
+            return drawEllipse.drawEllipse(parameters,jsonResponse["isFilled"]);
 
     }
  
      else if (jsonResponse["shape"] == "arc") {
         DrawShape drawArc;
-        parameters["radius1"] = jsonResponse["size"];
-        parameters["angle1"] = jsonResponse["startAngle"];
-        parameters["angle2"] = jsonResponse["endAngle"];
-        parameters["colorR"] = jsonResponse["color"]["r"];
-        parameters["colorG"] = jsonResponse["color"]["g"];
-        parameters["colorB"] = jsonResponse["color"]["b"];
-        parameters["colorA"] = jsonResponse["color"]["a"];
-        parameters["thickness"] = jsonResponse["thickness"];
+        parameters["Radius"] = jsonResponse["size"];
+        parameters["Angle_1"] = jsonResponse["startAngle"];
+        parameters["Angle_2"] = jsonResponse["endAngle"];
+        parameters["Red"] = jsonResponse["color"]["r"];
+        parameters["Green"] = jsonResponse["color"]["g"];
+        parameters["Blue"] = jsonResponse["color"]["b"];
+        parameters["Alpha"] = jsonResponse["color"]["a"];
+        parameters["Thickness"] = jsonResponse["thickness"];
+
 
         data->setParameters(parameters);
         return drawArc.drawArc(parameters);

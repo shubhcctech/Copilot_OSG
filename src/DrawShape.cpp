@@ -25,7 +25,7 @@ DrawShape::~DrawShape() {
 }
 
 
-osg::Geode* DrawShape::drawCircle(std::map<std::string, float> parameters) const{
+osg::Geode* DrawShape::drawCircle(std::map<std::string, float> parameters,bool isFilled) const{
 
 
    
@@ -37,16 +37,26 @@ osg::Geode* DrawShape::drawCircle(std::map<std::string, float> parameters) const
     float angleIncrement = 2.0f * osg::PI / 100;
     for (int i = 0; i < 100; ++i) {
         float angle = angleIncrement * i;
-        float x = parameters["radius"] * cos(angle);
-        float z = parameters["radius"] * sin(angle);
+        float x = parameters["Radius"] * cos(angle);
+        float z = parameters["Radius"] * sin(angle);
         vertices->push_back(osg::Vec3(x, 0.0f, z));
     }
+    if (isFilled) {
+        osg::ref_ptr<osg::DrawArrays> fan = new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_FAN);
+        fan->setFirst(0);
+        fan->setCount(vertices->size());
+        geom->addPrimitiveSet(fan);
+    }
 
-    osg::ref_ptr<osg::DrawArrays> drawArray = new osg::DrawArrays(osg::PrimitiveSet::LINE_LOOP, 0, 100);
-    geom->addPrimitiveSet(drawArray);
+    
+    else {
+        osg::ref_ptr<osg::DrawArrays> drawArray = new osg::DrawArrays(osg::PrimitiveSet::LINE_LOOP, 0, 100);
+        geom->addPrimitiveSet(drawArray);
+    }
+ 
 
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(parameters["colorR"], parameters["colorG"], parameters["colorB"], parameters["colorA"]));
+    colors->push_back(osg::Vec4(parameters["Red"], parameters["Green"], parameters["Blue"], parameters["Alpha"]));
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width
@@ -63,7 +73,7 @@ osg::Geode* DrawShape::drawCircle(std::map<std::string, float> parameters) const
   
 }
 
-osg::Geode* DrawShape::drawEllipse(std::map<std::string, float> parameters) const {
+osg::Geode* DrawShape::drawEllipse(std::map<std::string, float> parameters,bool isFilled) const {
 
     osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
 
@@ -73,29 +83,38 @@ osg::Geode* DrawShape::drawEllipse(std::map<std::string, float> parameters) cons
     float angleIncrement = 2.0f * osg::PI / 1000;
     for (int i = 0; i < 1000; ++i) {
         float angle = angleIncrement * i;
-        float x = parameters["majorAxis"] * cos(angle);
-        float z = parameters["minorAxis"] * sin(angle);
+        float x = parameters["Major_Axis"] * cos(angle);
+        float z = parameters["Minor_Axis"] * sin(angle);
         vertices->push_back(osg::Vec3(x, 0.0f, z));
     }
 
-    // Connect the last point with the first point to close the ellipse
-    vertices->push_back(vertices->front());
 
-    // Create a primitive set (line loop)
-    osg::ref_ptr<osg::DrawElementsUInt> loop = new osg::DrawElementsUInt(osg::PrimitiveSet::LINE_LOOP, 0);
-    for (unsigned int i = 0; i < 1000; ++i) {
-        loop->push_back(i);
+ 
+    if (isFilled) {
+        osg::ref_ptr<osg::DrawArrays> fan = new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_FAN);
+        fan->setFirst(0);
+        fan->setCount(vertices->size());
+        geom->addPrimitiveSet(fan);
     }
+    else {
+        osg::ref_ptr<osg::DrawElementsUInt> loop = new osg::DrawElementsUInt(osg::PrimitiveSet::LINE_LOOP, 0);
+        for (unsigned int i = 0; i < 1000; ++i) {
+            loop->push_back(i);
+        }
 
-    // Add primitive set to geometry
-    geom->addPrimitiveSet(loop);
+        // Add primitive set to geometry
+        geom->addPrimitiveSet(loop);
+
+    }
+    // Create a primitive set (line loop)
+  
 
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(parameters["colorR"], parameters["colorG"], parameters["colorB"], parameters["colorA"]));
+    colors->push_back(osg::Vec4(parameters["Red"], parameters["Green"], parameters["Blue"], parameters["Alpha"]));
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width
-    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["thickness"]);
+    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["Thickness"]);
     geom->getOrCreateStateSet()->setAttributeAndModes(lineWidth, osg::StateAttribute::ON);
 
     // Disable lighting
@@ -114,17 +133,17 @@ osg::Geode* DrawShape::drawArc(std::map<std::string, float> parameters) const {
     geom->setVertexArray(vertices);
 
     // Convert angles to radians
-    parameters["angle1"] = osg::DegreesToRadians(parameters["angle1"]);
-    parameters["angle2"] = osg::DegreesToRadians(parameters["angle2"]);
+    parameters["Angle_1"] = osg::DegreesToRadians(parameters["Angle_1"]);
+    parameters["Angle_2"] = osg::DegreesToRadians(parameters["Angle_2"]);
 
     // Calculate angle increment based on the number of segments
-    float angleIncrement = (parameters["angle1"] - parameters["angle2"]) / (1000 - 1);
+    float angleIncrement = (parameters["Angle_1"] - parameters["Angle_2"]) / (1000 - 1);
 
     // Add points along the arc
     for (int i = 0; i < 1000; ++i) {
-        float angle = parameters["angle1"] + angleIncrement * i;
-        float x = parameters["radius1"] * cos(angle);
-        float z = parameters["radius1"] * sin(angle);
+        float angle = parameters["Angle_1"] + angleIncrement * i;
+        float x = parameters["Radius"] * cos(angle);
+        float z = parameters["Radius"] * sin(angle);
         vertices->push_back(osg::Vec3(x, 0.0f, z));
     }
 
@@ -139,11 +158,11 @@ osg::Geode* DrawShape::drawArc(std::map<std::string, float> parameters) const {
     geom->addPrimitiveSet(strip);
 
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(parameters["colorR"], parameters["colorG"], parameters["colorB"], parameters["colorA"])); // Red color
+    colors->push_back(osg::Vec4(parameters["Red"], parameters["Green"], parameters["Blue"], parameters["Alpha"])); // Red color
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width
-    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["thickness"]);
+    osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth(parameters["Thickness"]);
     geom->getOrCreateStateSet()->setAttributeAndModes(lineWidth, osg::StateAttribute::ON);
 
     // Disable lighting
@@ -176,7 +195,7 @@ osg::Geode* DrawShape::drawLine(std::map<std::string, float> parameters) const {
     geom->addPrimitiveSet(strip);
 
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(parameters["Color_R"], parameters["Color_G"], parameters["Color_B"], parameters["Color_A"])); // Line color
+    colors->push_back(osg::Vec4(parameters["Red"], parameters["Green"], parameters["Blue"], parameters["Alpha"])); // Line color
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width

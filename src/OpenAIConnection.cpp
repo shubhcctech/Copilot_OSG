@@ -14,7 +14,7 @@ OpenAIConnection::OpenAIConnection(const std::string& prompt, const std::string&
 
 OpenAIConnection::~OpenAIConnection()
 {
-}
+    }
 
 void OpenAIConnection::process()
 {

@@ -16,8 +16,8 @@ public :
 	~DrawShape();
 
 	
-	osg::Geode* drawCircle(std::map<std::string, float>) const;
-	osg::Geode* drawEllipse(std::map<std::string, float>) const;
+	osg::Geode* drawCircle(std::map<std::string, float>,bool) const;
+	osg::Geode* drawEllipse(std::map<std::string, float>,bool) const;
 	osg::Geode* drawArc(std::map<std::string, float>) const;
 	osg::Geode* drawLine(std::map<std::string, float>) const;
 

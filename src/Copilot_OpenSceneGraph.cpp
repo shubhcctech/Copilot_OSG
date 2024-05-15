@@ -51,7 +51,7 @@ void Copilot_OpenSceneGraph::setupUi() {
     panelTextEdit = new QTextEdit("No shape drawn yet.", panel);
     panelTextEdit->setReadOnly(true);
     panelTextEdit->setFixedWidth(150); // Set fixed size for better control
-    panelTextEdit->setStyleSheet("background-color: #f0f0f0; color: #333; border: 2px solid #6ccfe0; border-radius: 5px; padding: 10px;");
+    panelTextEdit->setStyleSheet("background-color: #f0f0f0; color: #333; border: 2px solid #3498db; border-radius: 5px; padding: 10px;");
     panelLayout->addWidget(panelTextEdit);
 
     // Add the panel to the main layout
@@ -118,7 +118,7 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
   
     
     if (prompt.toLower().contains("circle")) {
-        QString final = "Generate a JSON object representing a circle with the following attributes: {\"shape\": \"circle\", \"size\": <circle_size >, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the circle size, thickness, and color values.";
+        QString final = "Generate a JSON object representing a circle with the following attributes: {\"shape\": \"circle\", \"size\": <circle_size >, \"thickness\": <thickness>,\"isFilled\":<boolean> ,\"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the circle size, thickness, and color values and isFilled false  if not specified whether solid or filled also give true for solid or filled.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
         connect(worker, &OpenAIConnection::completionReceived, this, &Copilot_OpenSceneGraph::handleCompletion);
@@ -127,7 +127,7 @@ void Copilot_OpenSceneGraph::checkShape(QString prompt) {
         worker->process();
     }
     else if (prompt.toLower().contains("ellipse")) {
-        QString final = "Generate a JSON object representing an ellipse with the following attributes: {\"shape\": \"ellipse\", \"size\": {\"radiusX\": <radiusX_value>, \"radiusY\": <radiusY_value> }, \"thickness\": <thickness>, \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the radiusX, radiusY, thickness, and color values.";
+        QString final = "Generate a JSON object representing an ellipse with the following attributes: {\"shape\": \"ellipse\", \"size\": {\"radiusX\": <radiusX_value>, \"radiusY\": <radiusY_value> }, \"thickness\": <thickness>,\"isFilled\":<boolean> , \"color\": {\"r\": <red_value in float>, \"g\": <green_value in float>, \"b\": <blue_value in float>, \"a\": <alpha_value in float> }}. Please specify the radiusX, radiusY, thickness, and color values isFilled false  if not specified whether solid or filled  also give true for solid or filled.";
         prompt.append(final);
         worker = new OpenAIConnection(prompt.toStdString(), "gpt-3.5-turbo");
         connect(worker, &OpenAIConnection::completionReceived, this, &Copilot_OpenSceneGraph::handleCompletion);
