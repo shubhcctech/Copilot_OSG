@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/.vs
+/Copilot_.7150F577/x64/Debug
+/x64/Debug
