@@ -60,7 +60,7 @@ osg::Geode* DrawShape::drawCircle(std::map<std::string, float> parameters,bool i
     geom->setColorArray(colors, osg::Array::BIND_OVERALL);
 
     // Set line width
-    geom->getOrCreateStateSet()->setAttribute(new osg::LineWidth(parameters["thickness"]), osg::StateAttribute::ON);
+    geom->getOrCreateStateSet()->setAttribute(new osg::LineWidth(parameters["Thickness"]), osg::StateAttribute::ON);
 
     // Disable lighting
     geom->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
