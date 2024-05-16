@@ -48,7 +48,7 @@ void Copilot_OpenSceneGraph::setupUi() {
     QWidget* panel = new QWidget(this);
     QVBoxLayout* panelLayout = new QVBoxLayout(panel);
     panel->setLayout(panelLayout);
-    panelTextEdit = new QTextEdit("No shape drawn yet.", panel);
+    panelTextEdit = new QTextEdit("Enter a command to draw a shape such as Circle, Ellipse, Arc and Line.", panel);
     panelTextEdit->setReadOnly(true);
     panelTextEdit->setFixedWidth(150); // Set fixed size for better control
     panelTextEdit->setStyleSheet("background-color: #f0f0f0; color: #333; border: 2px solid #3498db; border-radius: 5px; padding: 10px;");
